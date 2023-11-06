@@ -66,7 +66,7 @@ class DetailScreen extends StatelessWidget {
                       SizedBox(height: 10.0),
                       Text(
                         place.openDays,
-                        // style: iniFontCustom,
+                        style: iniFontCustom,
                       ),
                     ],
                   ),
@@ -76,7 +76,7 @@ class DetailScreen extends StatelessWidget {
                       SizedBox(height: 10.0),
                       Text(
                         place.openTime,
-                        // style: iniFontCustom,
+                        style: iniFontCustom,
                       ),
                     ],
                   ),
@@ -86,7 +86,7 @@ class DetailScreen extends StatelessWidget {
                       SizedBox(height: 10.0),
                       Text(
                         place.ticketPrice,
-                        // style: iniFontCustom,
+                        style: iniFontCustom,
                       ),
                     ],
                   ),
