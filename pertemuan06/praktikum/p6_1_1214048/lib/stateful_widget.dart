@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class MyInput extends StatefulWidget {
   const MyInput({super.key});
-
   @override
-  State<MyInput> createState() => _MyInputState();
+  State<MyInput> createState() => MyInputState();
 }
 
-class _MyInputState extends State<MyInput> {
-  TextEditingController _controller = TextEditingController();
+class MyInputState extends State<MyInput> {
+  String _name = '';
+  final TextEditingController _controller = TextEditingController();
   bool lightOn = false;
   String? language;
   bool agree = false;
@@ -29,20 +29,27 @@ class _MyInputState extends State<MyInput> {
                 hintText: 'Write your name here...',
                 labelText: 'Your Name',
               ),
+              onChanged: (String value) {
+                setState(() {
+                  _name = value;
+                });
+              },
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               child: const Text('Submit'),
               onPressed: () {
                 showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Text('Hello, ${_controller.text}'),
-                      );
-                    });
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: Text('Hello, $_name'),
+                    );
+                  },
+                );
               },
             ),
+            const SizedBox(height: 20),
             Switch(
               value: lightOn,
               onChanged: (bool value) {
@@ -52,75 +59,49 @@ class _MyInputState extends State<MyInput> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(lightOn ? 'Light On' : 'Light Off'),
-                    duration: Duration(seconds: 1),
+                    duration: const Duration(seconds: 1),
                   ),
                 );
               },
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: Radio<String>(
-                    value: 'Dart',
-                    groupValue: language,
-                    onChanged: (String? value) {
-                      setState(() {
-                        language = value;
-                        void showSnackbar(String selectedLanguage) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'Anda memilih bahasa: $selectedLanguage'),
-                            ),
-                          );
-                        }
-                      });
-                    },
-                  ),
-                  title: Text('Dart'),
-                ),
-                ListTile(
-                  leading: Radio<String>(
-                    value: 'Kotlin',
-                    groupValue: language,
-                    onChanged: (String? value) {
-                      setState(() {
-                        language = value;
-                        void showSnackbar(String selectedLanguage) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'Anda memilih bahasa: $selectedLanguage'),
-                            ),
-                          );
-                        }
-                      });
-                    },
-                  ),
-                  title: Text('Kotlin'),
-                ),
-                ListTile(
-                  leading: Radio<String>(
-                    value: 'Swift',
-                    groupValue: language,
-                    onChanged: (String? value) {
-                      setState(() {
-                        language = value;
-                        void showSnackbar(String selectedLanguage) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'Anda memilih bahasa: $selectedLanguage'),
-                            ),
-                          );
-                        }
-                      });
-                    },
-                  ),
-                  title: Text('Swift'),
-                ),
-              ],
+            ListTile(
+              leading: Radio<String>(
+                value: 'Dart',
+                groupValue: language,
+                onChanged: (String? value) {
+                  setState(() {
+                    language = value;
+                    showSnackbar();
+                  });
+                },
+              ),
+              title: const Text('Dart'),
+            ),
+            ListTile(
+              leading: Radio<String>(
+                value: 'Kotlin',
+                groupValue: language,
+                onChanged: (String? value) {
+                  setState(() {
+                    language = value;
+                    showSnackbar();
+                  });
+                },
+              ),
+              title: const Text('Kotlin'),
+            ),
+            ListTile(
+              leading: Radio<String>(
+                value: 'Swift',
+                groupValue: language,
+                onChanged: (String? value) {
+                  setState(() {
+                    language = value;
+                    showSnackbar();
+                  });
+                },
+              ),
+              title: const Text('Swift'),
             ),
             ListTile(
               leading: Checkbox(
@@ -128,13 +109,33 @@ class _MyInputState extends State<MyInput> {
                 onChanged: (bool? value) {
                   setState(() {
                     agree = value!;
+                    showCheckboxSnackbar(agree);
                   });
                 },
               ),
-              title: Text('Agree / Disagree'),
+              title: const Text('Agree / Disagree'),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  showSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Kamu Memilih $language'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  showCheckboxSnackbar(bool isChecked) {
+    final message = isChecked ? 'Agree' : 'Disagree';
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 1),
       ),
     );
   }
